@@ -7,6 +7,7 @@ const Map = (props) => {
     const [lat, setLat] = useState(34.0689);
     const [long, setLong] = useState(-118.4552);
     const [heatmapData, setHeatMapData] = useState([]);
+    const[heatmap, setHeatmap] = useState(null);
 
     useEffect(() => {
         const loader = new Loader({
@@ -21,6 +22,7 @@ const Map = (props) => {
                 lng: -118.4552,
             },
             zoom: 15,
+            disableDefaultUI: true,
         };
 
         loader
@@ -50,19 +52,36 @@ const Map = (props) => {
                     weight: Math.floor(Math.random() * 1000),
                 },
             ]);
-            let heatmap = new google.maps.visualization.HeatmapLayer({
+
+            setHeatmap(new google.maps.visualization.HeatmapLayer({
                 data: heatmapData,
-            });
-            console.log('bruh');
+            }));
+
+            
+
+            map.setCenter({ lat: lat, lng: long });
+
             heatmap.setMap(map);
         }
     }
+
+    function handleResize() {
+        if (google) {
+            let bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < heatmapData.length; i++) {
+                bounds.extend(heatmapData[i].location);
+            }
+            map.fitBounds(bounds);
+        }
+    }
+
     console.log('i refreshed');
 
     return (
         <>
             <div id="map">Map</div>
             <button onClick={handleClick}>button</button>
+            <button onClick={handleResize}>resize</button>
         </>
     );
 };
