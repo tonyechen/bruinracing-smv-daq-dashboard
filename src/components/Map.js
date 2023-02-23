@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
+import { getAllTrials, getData } from '../database/db';
 
 const Map = (props) => {
     const [google, setGoogle] = useState(null);
@@ -7,7 +8,7 @@ const Map = (props) => {
     const [lat, setLat] = useState(34.0689);
     const [long, setLong] = useState(-118.4552);
     const [heatmapData, setHeatMapData] = useState([]);
-    const[heatmap, setHeatmap] = useState(null);
+    const [heatmap, setHeatmap] = useState(null);
 
     useEffect(() => {
         const loader = new Loader({
@@ -40,6 +41,7 @@ const Map = (props) => {
                 // do something
                 console.log('falied to fetch google map');
             });
+        getAllTrials();
     }, []);
 
     function handleClick() {
@@ -53,11 +55,11 @@ const Map = (props) => {
                 },
             ]);
 
-            setHeatmap(new google.maps.visualization.HeatmapLayer({
-                data: heatmapData,
-            }));
-
-            
+            setHeatmap(
+                new google.maps.visualization.HeatmapLayer({
+                    data: heatmapData,
+                })
+            );
 
             map.setCenter({ lat: lat, lng: long });
 
