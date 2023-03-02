@@ -15,7 +15,7 @@ const database = getDatabase(app);
 // get All Trial Data
 export function getAllTrials() {
     console.log('getting data...');
-    get(ref(database)).then((snapshot) => {
+    get(ref(database, 'Latest Trial')).then((snapshot) => {
         console.log(snapshot.val());
     });
 }

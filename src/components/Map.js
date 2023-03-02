@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
-import { getAllTrials, getData } from '../database/db';
+import { getAllTrials } from '../database/db';
+import Box from '@mui/material/Box';
+import { Button, ButtonGroup, Container } from '@mui/material';
 
 const Map = (props) => {
     const [google, setGoogle] = useState(null);
@@ -29,6 +31,7 @@ const Map = (props) => {
         loader
             .load()
             .then((google) => {
+                console.log('google map loading...');
                 setGoogle(google);
                 setMap(
                     new google.maps.Map(
@@ -39,9 +42,9 @@ const Map = (props) => {
             })
             .catch((e) => {
                 // do something
-                console.log('falied to fetch google map');
+                console.log('falied to fetch google map: ', e);
             });
-        getAllTrials();
+        // getAllTrials();
     }, []);
 
     function handleClick() {
@@ -55,11 +58,9 @@ const Map = (props) => {
                 },
             ]);
 
-            setHeatmap(
-                new google.maps.visualization.HeatmapLayer({
-                    data: heatmapData,
-                })
-            );
+            let heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatmapData,
+            });
 
             map.setCenter({ lat: lat, lng: long });
 
@@ -80,11 +81,17 @@ const Map = (props) => {
     console.log('i refreshed');
 
     return (
-        <>
+        <Container sx={{ position: "relative", width: '100%', height: '100%' }}>
             <div id="map">Map</div>
-            <button onClick={handleClick}>button</button>
-            <button onClick={handleResize}>resize</button>
-        </>
+            <ButtonGroup
+                variant="contained"
+                aria-label="outlined primary button group"
+                sx={{position: "absolute", left: "30px", bottom: "10px"}}
+            >
+                <Button onClick={handleClick}>Add</Button>
+                <Button onClick={handleResize}>resize</Button>
+            </ButtonGroup>
+        </Container>
     );
 };
 

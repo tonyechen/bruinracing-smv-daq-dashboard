@@ -1,9 +1,11 @@
 #map {
   width: 100%;
   height: 100%;
+  border-radius: 20px;
+
 }
 
 .App {
- width: 50vw;
- height: 50vh;
+ width: 100vw;
+ height: 100vh;
 }
