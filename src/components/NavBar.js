@@ -1,17 +1,16 @@
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useDispatch } from 'react-redux';
+import { sideMenuActions } from '../datastore/sideMenu';
 
 const NavBar = () => {
-    const [open, setOpen] = useState(true);
-    const [drawerWidth, setDrawerWidth] = useState(200);
-
+    const dispatch = useDispatch();
     return (
         <AppBar
             position="static"
             onClick={() => {
-                setOpen(!open);
-                setDrawerWidth(200);
+                dispatch(sideMenuActions.toggle());
             }}
         >
             <Toolbar variant="dense">
