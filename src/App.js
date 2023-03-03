@@ -8,7 +8,7 @@ import {
     Toolbar,
     Typography,
 } from '@mui/material';
-import LiveInterface from './components/LiveInterface';
+import LiveInterface from './pages/LiveInterface';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import SideMenu from './components/SideMenu';

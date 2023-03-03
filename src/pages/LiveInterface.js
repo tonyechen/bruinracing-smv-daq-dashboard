@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import React from 'react';
-import Map from './Map';
+import Map from '../components/Map';
 
 const LiveInterface = () => {
     return (
