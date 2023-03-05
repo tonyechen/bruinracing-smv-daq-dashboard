@@ -21,9 +21,9 @@ function App() {
         <Box className="App" spacing={2}>
             <NavBar />
 
-            <Grid container sx={{ height: '90%' }}>
+            <Grid container sx={{ height: '90%' }} spacing={2}>
                 {isOpen && (
-                    <Grid item maxWidth={200} xs={3}>
+                    <Grid item>
                         <SideMenu />
                     </Grid>
                 )}

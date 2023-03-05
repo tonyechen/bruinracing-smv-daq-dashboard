@@ -65,7 +65,7 @@ const Graph = () => {
                 data={data}
                 options={options}
             ></Line>
-            <Button onClick={addData}>Add Data</Button>
+            {/* <Button onClick={addData}>Add Data</Button> */}
         </>
     );
 };

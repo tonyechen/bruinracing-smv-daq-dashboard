@@ -7,7 +7,7 @@ const LiveInterface = () => {
     return (
         <Grid container sx={{ width: '100%', height: '90%', overflow: 'auto' }}>
             <Grid item xs={12} md={12} sx={{ height: '30%' }}>
-                <Box sx={{ height: '100%', width: '100%', display: 'flex' }}>
+                <Box sx={{ height: '100%', width: '100%', display: 'flex', justifyContent: 'space-evenly' }}>
                     <Graph />
                     <Graph />
                     <Graph />
