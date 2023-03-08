@@ -10,7 +10,8 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Card } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 ChartJS.register(
     CategoryScale,
@@ -22,51 +23,66 @@ ChartJS.register(
     Legend
 );
 
-const Graph = () => {
-    // const [liveData, setLiveData] = useState([65, 59, 80, 81, 56, 55, 40]);
+const labels = [];
 
-    const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-    const data = {
-        labels: labels,
-        datasets: [
-            {
-                data: [65, 59, 80, 81, 56, 55, 40],
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.2,
-            },
-        ],
-    };
-
-    const options = {
-        responsive: true,
-        aspectRatio: 1,
-        interaction: {
-            intersect: false,
+const data = {
+    labels: labels,
+    datasets: [
+        {
+            data: [],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
         },
-    };
+    ],
+};
+
+const options = {
+    responsive: true,
+    aspectRatio: 1,
+    animation: false,
+    interaction: {
+        intersect: false,
+    },
+};
+
+const Graph = () => {
+    const liveData = useSelector((state) => state.trialData.data);
 
     const chartRef = useRef(null);
 
-    const addData = () => {
+    useEffect(() => {
+        if (liveData[0]) {
+            addData();
+        }
+    }, [liveData]);
+
+    function addData() {
         const chart = chartRef.current;
-        chart.data.labels.push(parseInt(Math.random() * 10));
+        const labels = Object.keys(liveData);
+        chart.data.labels.push(labels[labels.length - 1]);
+        if (chart.data.labels.length > 100) {
+            chart.data.labels.shift();
+        }
         chart.data.datasets.forEach((dataset) => {
-            dataset.data.push(Math.random() * 20 + 50);
+            const data = Object.values(liveData);
+            dataset.data.push(data[data.length - 1].Speed);
+
+            if (dataset.data.length > 100) {
+                dataset.data.shift(0);
+            }
         });
         chart.update();
-    };
+    }
+
     return (
-        <>
+        <Card sx={{ height: '100%', width: 'auto' }}>
             <Line
-                className='graph'
+                className="graph"
                 ref={chartRef}
                 data={data}
                 options={options}
             ></Line>
-            {/* <Button onClick={addData}>Add Data</Button> */}
-        </>
+        </Card>
     );
 };
 

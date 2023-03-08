@@ -3,6 +3,7 @@ import { Loader } from '@googlemaps/js-api-loader';
 import { getAllTrials } from '../database/db';
 import Box from '@mui/material/Box';
 import { Button, ButtonGroup, Container } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 const Map = (props) => {
     const [google, setGoogle] = useState(null);
@@ -10,6 +11,8 @@ const Map = (props) => {
     const [lat, setLat] = useState(34.0689);
     const [long, setLong] = useState(-118.4552);
     const [heatmapData, setHeatMapData] = useState([]);
+    const liveData = useSelector((state) => state.trialData.data);
+
     const [heatmap, setHeatmap] = useState(null);
 
     useEffect(() => {
@@ -47,8 +50,38 @@ const Map = (props) => {
         // getAllTrials();
     }, []);
 
+    useEffect(() => {
+        if (google) {
+            let mapData = [];
+            for (const index in liveData) {
+                mapData.push({
+                    location: new google.maps.LatLng(
+                        liveData[index].latitude,
+                        liveData[index].longtitude
+                    ),
+                    weight: liveData[index]['RPM'],
+                });
+            }
+
+            setHeatMapData(mapData);
+
+            let heatmap = new google.maps.visualization.HeatmapLayer({
+                data: mapData,
+                map: map
+            });
+
+            map.setCenter({
+                lat: mapData[mapData.length - 1].lat,
+                lng: mapData[mapData.length - 1].long,
+            });
+
+            // heatmap.setMap(map);
+        }
+    }, [liveData]);
+
     function handleClick() {
         if (google) {
+            
             setLat(lat + 0.0001);
             setHeatMapData([
                 ...heatmapData,
@@ -81,12 +114,12 @@ const Map = (props) => {
     console.log('i refreshed');
 
     return (
-        <Container sx={{ position: "relative", width: '100%', height: '100%' }}>
+        <Container sx={{ position: 'relative', width: '100%', height: '100%' }}>
             <div id="map">Map</div>
             <ButtonGroup
                 variant="contained"
                 aria-label="outlined primary button group"
-                sx={{position: "absolute", left: "30px", bottom: "10px"}}
+                sx={{ position: 'absolute', left: '30px', bottom: '10px' }}
             >
                 <Button onClick={handleClick}>Add</Button>
                 <Button onClick={handleResize}>resize</Button>

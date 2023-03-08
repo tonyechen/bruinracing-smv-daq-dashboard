@@ -7,18 +7,25 @@ const LiveInterface = () => {
     return (
         <Grid container sx={{ width: '100%', height: '90%', overflow: 'auto' }}>
             <Grid item xs={12} md={12} sx={{ height: '30%' }}>
-                <Box sx={{ height: '100%', width: '100%', display: 'flex', justifyContent: 'space-evenly' }}>
+                <Box
+                    sx={{
+                        height: '100%',
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                    }}
+                >
+                    {/* <Graph />
                     <Graph />
                     <Graph />
-                    <Graph />
-                    <Graph />
+                    <Graph /> */}
                 </Box>
             </Grid>
             <Grid item xs={4} md={4} sx={{ height: '70%' }}>
-                Trial Data?
+                <Graph />
             </Grid>
             <Grid item xs={8} md={8} sx={{ height: '70%' }}>
-                {/* <Map /> */}
+                <Map />
                 Map
             </Grid>
         </Grid>
