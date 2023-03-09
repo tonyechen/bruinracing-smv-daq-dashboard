@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import { Button, ButtonGroup, Container } from '@mui/material';
 import { useSelector } from 'react-redux';
 
+let mapData;
+
 const Map = (props) => {
     const [google, setGoogle] = useState(null);
     const [map, setMap] = useState(null);
@@ -12,8 +14,6 @@ const Map = (props) => {
     const [long, setLong] = useState(-118.4552);
     const [heatmapData, setHeatMapData] = useState([]);
     const liveData = useSelector((state) => state.trialData.data);
-
-    const [heatmap, setHeatmap] = useState(null);
 
     useEffect(() => {
         const loader = new Loader({
@@ -52,36 +52,30 @@ const Map = (props) => {
 
     useEffect(() => {
         if (google) {
-            let mapData = [];
-            for (const index in liveData) {
-                mapData.push({
-                    location: new google.maps.LatLng(
-                        liveData[index].latitude,
-                        liveData[index].longtitude
-                    ),
-                    weight: liveData[index]['RPM'],
+            const latestTrial =
+                Object.values(liveData)[Object.values(liveData).length - 1];
+            let latestData = {
+                location: new google.maps.LatLng(
+                    latestTrial.latitude,
+                    latestTrial.longtitude
+                ),
+                weight: latestTrial.Speed,
+            };
+            if (!mapData) {
+                // initialize heatmap layer
+                mapData = new google.maps.MVCArray([latestData]);
+                let heatmap = new google.maps.visualization.HeatmapLayer({
+                    data: mapData,
                 });
+                heatmap.setMap(map);
+            } else {
+                mapData.push(latestData);
             }
-
-            setHeatMapData(mapData);
-
-            let heatmap = new google.maps.visualization.HeatmapLayer({
-                data: mapData,
-                map: map
-            });
-
-            map.setCenter({
-                lat: mapData[mapData.length - 1].lat,
-                lng: mapData[mapData.length - 1].long,
-            });
-
-            // heatmap.setMap(map);
         }
     }, [liveData]);
 
     function handleClick() {
         if (google) {
-            
             setLat(lat + 0.0001);
             setHeatMapData([
                 ...heatmapData,
