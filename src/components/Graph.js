@@ -12,6 +12,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { Box, Button, Card } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { getAllTrials } from '../database/db';
 
 ChartJS.register(
     CategoryScale,
@@ -45,10 +46,15 @@ const options = {
     },
 };
 
-const Graph = () => {
+// how many data points are displayed on the graph
+const data_length = 100;
+
+const Graph = ({ dataType }) => {
     const liveData = useSelector((state) => state.trialData.data);
 
     const chartRef = useRef(null);
+
+    // getAllTrials();
 
     useEffect(() => {
         if (liveData[0]) {
@@ -58,19 +64,40 @@ const Graph = () => {
 
     function addData() {
         const chart = chartRef.current;
-        const labels = Object.keys(liveData);
-        chart.data.labels.push(labels[labels.length - 1]);
-        if (chart.data.labels.length > 100) {
-            chart.data.labels.shift();
-        }
-        chart.data.datasets.forEach((dataset) => {
-            const data = Object.values(liveData);
-            dataset.data.push(data[data.length - 1].Speed);
 
-            if (dataset.data.length > 100) {
-                dataset.data.shift(0);
+        const labels = Object.keys(liveData);
+        const num_labels = labels.length;
+        if (num_labels > data_length) {
+            chart.data.labels = labels.slice(
+                num_labels - data_length,
+                num_labels - 1
+            );
+        } else {
+            chart.data.labels = labels;
+        }
+
+        chart.data.datasets.forEach((dataset) => {
+            const all_data = Object.values(liveData);
+            const data_values = [];
+            all_data.map(data => {
+                data_values.push(data[dataType]);
+            })
+
+            const num_data_values = data_values.length;
+
+            if (num_data_values > data_length) {
+                dataset.data = data_values.slice(
+                    num_labels - data_length,
+                    num_labels - 1
+                );
+            } else {
+                dataset.data = data_values;
             }
+            console.log(dataset);
+
+            dataset.label = dataType;
         });
+
         chart.update();
     }
 

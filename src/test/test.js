@@ -26,7 +26,7 @@ export default class Test {
 
     generateParameter(name) {
         let min = 10;
-        let max = 40;
+        let max = 4000;
         return {
             name: name,
             value: parseInt(Math.random() * (max - min) + min),

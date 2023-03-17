@@ -6,8 +6,9 @@ import { Button, ButtonGroup, Container } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 let mapData;
+let currentType = '';
 
-const Map = (props) => {
+const Map = ({ dataType }) => {
     const [google, setGoogle] = useState(null);
     const [map, setMap] = useState(null);
     const [lat, setLat] = useState(34.0689);
@@ -52,15 +53,18 @@ const Map = (props) => {
 
     useEffect(() => {
         if (google) {
-            const latestTrial =
-                Object.values(liveData)[Object.values(liveData).length - 1];
+            const num_trial = Object.values(liveData).length;
+            const all_trial_data = Object.values(liveData);
+            const latestTrial = all_trial_data[num_trial - 1];
+
             let latestData = {
                 location: new google.maps.LatLng(
                     latestTrial.latitude,
                     latestTrial.longtitude
                 ),
-                weight: latestTrial.Speed,
+                weight: latestTrial[dataType],
             };
+
             if (!mapData) {
                 // initialize heatmap layer
                 mapData = new google.maps.MVCArray([latestData]);
@@ -69,37 +73,27 @@ const Map = (props) => {
                 });
                 heatmap.setMap(map);
             } else {
-                mapData.push(latestData);
+                if (currentType != dataType) {
+                    currentType = dataType;
+
+                    // change the weight of the heatmap layer
+                    let i = 0;
+                    all_trial_data.forEach(data => {
+                        mapData[i] = data[dataType];
+                        i++;
+                    })
+                } else {
+                    mapData.push(latestData);
+                }
             }
         }
     }, [liveData]);
 
-    function handleClick() {
-        if (google) {
-            setLat(lat + 0.0001);
-            setHeatMapData([
-                ...heatmapData,
-                {
-                    location: new google.maps.LatLng(lat, long),
-                    weight: Math.floor(Math.random() * 1000),
-                },
-            ]);
-
-            let heatmap = new google.maps.visualization.HeatmapLayer({
-                data: heatmapData,
-            });
-
-            map.setCenter({ lat: lat, lng: long });
-
-            heatmap.setMap(map);
-        }
-    }
-
     function handleResize() {
         if (google) {
             let bounds = new google.maps.LatLngBounds();
-            for (var i = 0; i < heatmapData.length; i++) {
-                bounds.extend(heatmapData[i].location);
+            for (var i = 0; i < mapData.length; i++) {
+                bounds.extend(mapData[i].location);
             }
             map.fitBounds(bounds);
         }
@@ -115,7 +109,6 @@ const Map = (props) => {
                 aria-label="outlined primary button group"
                 sx={{ position: 'absolute', left: '30px', bottom: '10px' }}
             >
-                <Button onClick={handleClick}>Add</Button>
                 <Button onClick={handleResize}>resize</Button>
             </ButtonGroup>
         </Container>

@@ -17,5 +17,10 @@ export function getAllTrials() {
     console.log('getting data...');
     get(ref(database, 'Latest Trial')).then((snapshot) => {
         console.log(snapshot.val());
+        return snapshot.val();
     });
+}
+
+export function getLatestTrial() {
+    
 }
