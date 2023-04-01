@@ -87,7 +87,7 @@ const Map = ({ dataType }) => {
                 }
             }
         }
-    }, [liveData]);
+    }, [liveData, dataType]);
 
     function handleResize() {
         if (google) {

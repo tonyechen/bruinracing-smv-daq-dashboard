@@ -23,12 +23,12 @@ function App() {
 
             <Grid container sx={{ height: '90%' }} spacing={2}>
                 {isOpen && (
-                    <Grid item>
+                    <Grid item xs={2}>
                         <SideMenu />
                     </Grid>
                 )}
 
-                <Grid item xs={9}>
+                <Grid item xs={10}>
                     <LiveInterface />
                 </Grid>
             </Grid>

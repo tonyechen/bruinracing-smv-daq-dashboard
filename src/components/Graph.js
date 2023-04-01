@@ -60,7 +60,7 @@ const Graph = ({ dataType }) => {
         if (liveData[0]) {
             addData();
         }
-    }, [liveData]);
+    }, [liveData, dataType]);
 
     function addData() {
         const chart = chartRef.current;

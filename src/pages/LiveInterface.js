@@ -1,13 +1,9 @@
-import {
-    Box,
-    Card,
-    CardContent,
-    Grid,
-} from '@mui/material';
+import { Box, Card, CardContent, Grid } from '@mui/material';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Graph from '../components/Graph';
 import Map from '../components/Map';
+import ParamCard from '../components/ParamCard';
 
 const LiveInterface = () => {
     const latest_data = useSelector((state) => state.trialData.latest_data);
@@ -15,30 +11,33 @@ const LiveInterface = () => {
     const [selectedParam, setSelectedParam] = useState('');
 
     return (
-        <Grid container sx={{ width: '100%', height: '90%', overflow: 'auto' }}>
+        <Grid
+            container
+            sx={{ width: '100%', height: '100%', overflow: 'auto' }}
+        >
             <Grid item xs={12} md={12} sx={{ height: '30%' }}>
                 <Box
                     sx={{
                         height: '100%',
                         width: '100%',
                         display: 'flex',
-                        justifyContent: 'space-evenly',
+                        flex: 'flex-wrap',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
                     }}
                 >
                     {Object.keys(latest_data).map((parameter) => {
-                        return (
-                            <Card
-                                key={parameter}
-                                onClick={() => {
-                                    setSelectedParam(parameter);
-                                }}
-                            >
-                                <CardContent>{parameter}</CardContent>
-                                <CardContent>
-                                    <h3>{latest_data[parameter]}</h3>
-                                </CardContent>
-                            </Card>
-                        );
+                        if (parameter !== 'latitude' && parameter !== 'longtitude')
+                            return (
+                                <ParamCard
+                                    onSelect={() => {
+                                        setSelectedParam(parameter);
+                                    }}
+                                    selectedParam={selectedParam}
+                                    param={parameter}
+                                    dataVal={latest_data[parameter]}
+                                />
+                            );
                     })}
                 </Box>
             </Grid>
@@ -47,7 +46,6 @@ const LiveInterface = () => {
             </Grid>
             <Grid item xs={8} md={8} sx={{ height: '70%' }}>
                 <Map />
-                Map
             </Grid>
         </Grid>
     );
