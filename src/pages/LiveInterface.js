@@ -1,4 +1,5 @@
 import { Box, Card, CardContent, Grid } from '@mui/material';
+import { off } from 'firebase/database';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Graph from '../components/Graph';
@@ -24,12 +25,17 @@ const LiveInterface = () => {
                         flex: 'flex-wrap',
                         justifyContent: 'flex-start',
                         alignItems: 'center',
+                        overflow: 'auto',
                     }}
                 >
                     {Object.keys(latest_data).map((parameter) => {
-                        if (parameter !== 'latitude' && parameter !== 'longtitude')
+                        if (
+                            parameter !== 'latitude' &&
+                            parameter !== 'longtitude'
+                        )
                             return (
                                 <ParamCard
+                                    key={parameter}
                                     onSelect={() => {
                                         setSelectedParam(parameter);
                                     }}
@@ -45,7 +51,7 @@ const LiveInterface = () => {
                 <Graph dataType={selectedParam} />
             </Grid>
             <Grid item xs={8} md={8} sx={{ height: '70%' }}>
-                <Map dataType={selectedParam}/>
+                <Map dataType={selectedParam} />
             </Grid>
         </Grid>
     );
