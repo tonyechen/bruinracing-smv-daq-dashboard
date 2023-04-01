@@ -12,10 +12,10 @@ const units = {
 
 const ParamCard = ({ onSelect, selectedParam, param, dataVal }) => {
     let styles = {
-        width: '150px',
+        minWidth: '150px',
         height: '150px',
         margin: 1,
-        'border-radius': '5px',
+        borderRadius: '5px',
         cursor: 'pointer',
         '&:hover': {
             backgroundColor: 'rgb(7, 177, 77, 0.42)',
@@ -27,9 +27,9 @@ const ParamCard = ({ onSelect, selectedParam, param, dataVal }) => {
     }
 
     return (
-        <Card key={param} sx={styles} onClick={onSelect} onFocus>
-            <CardContent sx={{ 'padding-bottom': 0 }}>
-                <Typography variant={'subtitle2'}>{param}</Typography>
+        <Card key={param} sx={styles} onClick={onSelect}>
+            <CardContent sx={{ paddingBottom: 0 }}>
+                <Typography variant={'caption'}>{param}</Typography>
             </CardContent>
             <CardContent>
                 <Typography variant={'h4'} align={'center'}>
