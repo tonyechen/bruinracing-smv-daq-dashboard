@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { get, getDatabase, onValue, ref } from 'firebase/database';
+import { get, getDatabase, onValue, ref, set, update } from 'firebase/database';
 
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
@@ -13,14 +13,23 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 // get All Trial Data
-export function getAllTrials() {
+export async function getAllTrials() {
     console.log('getting data...');
-    get(ref(database, 'Latest Trial')).then((snapshot) => {
-        console.log(snapshot.val());
+    await get(ref(database)).then((snapshot) => {
         return snapshot.val();
     });
 }
 
-export function getLatestTrial() {
-    
+// get the latest trial time
+export async function getLatestTrialTime() {
+    console.log('getting latest trial time...');
+    return await (await get(ref(database, 'Latest Trial'))).val();
 }
+
+// this function is mainly for testing only
+export async function pushTrialData(trialTime, data) {
+    console.log('updating trial data');
+    return await set(ref(database, trialTime), data);
+}
+
+export default database;
