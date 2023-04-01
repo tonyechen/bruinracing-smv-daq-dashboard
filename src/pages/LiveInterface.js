@@ -45,7 +45,7 @@ const LiveInterface = () => {
                 <Graph dataType={selectedParam} />
             </Grid>
             <Grid item xs={8} md={8} sx={{ height: '70%' }}>
-                <Map />
+                <Map dataType={selectedParam}/>
             </Grid>
         </Grid>
     );

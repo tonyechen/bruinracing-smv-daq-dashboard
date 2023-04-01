@@ -93,7 +93,6 @@ const Graph = ({ dataType }) => {
             } else {
                 dataset.data = data_values;
             }
-            console.log(dataset);
 
             dataset.label = dataType;
         });

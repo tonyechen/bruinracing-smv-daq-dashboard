@@ -78,12 +78,20 @@ const Map = ({ dataType }) => {
 
                     // change the weight of the heatmap layer
                     let i = 0;
-                    all_trial_data.forEach(data => {
-                        mapData[i] = data[dataType];
+                    all_trial_data.forEach((data) => {
+                        mapData.setAt(i, {
+                            location: new google.maps.LatLng(
+                                data.latitude,
+                                data.longtitude
+                            ),
+                            weight: data[dataType],
+                        });
                         i++;
-                    })
+                    });
                 } else {
-                    mapData.push(latestData);
+                    if (currentType != '') {
+                        mapData.push(latestData);
+                    }
                 }
             }
         }
@@ -93,13 +101,11 @@ const Map = ({ dataType }) => {
         if (google) {
             let bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < mapData.length; i++) {
-                bounds.extend(mapData[i].location);
+                bounds.extend(mapData.getAt(i).location);
             }
             map.fitBounds(bounds);
         }
     }
-
-    console.log('i refreshed');
 
     return (
         <Container sx={{ position: 'relative', width: '100%', height: '100%' }}>
