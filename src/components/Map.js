@@ -59,8 +59,8 @@ const Map = ({ dataType }) => {
 
             let latestData = {
                 location: new google.maps.LatLng(
-                    latestTrial.latitude,
-                    latestTrial.longtitude
+                    latestTrial['GPS latitude'],
+                    latestTrial['GPS longitude']
                 ),
                 weight: latestTrial[dataType],
             };
@@ -78,19 +78,27 @@ const Map = ({ dataType }) => {
 
                     // change the weight of the heatmap layer
                     let i = 0;
+
                     all_trial_data.forEach((data) => {
-                        mapData.setAt(i, {
-                            location: new google.maps.LatLng(
-                                data.latitude,
-                                data.longtitude
-                            ),
-                            weight: data[dataType],
-                        });
-                        i++;
+                        if (data['GPS latitude'] && data['GPS longitude']) {
+                            mapData.setAt(i, {
+                                location: new google.maps.LatLng(
+                                    data['GPS latitude'],
+                                    data['GPS longitude']
+                                ),
+                                weight: data[dataType],
+                            });
+                            i++;
+                        }
                     });
                 } else {
                     if (currentType != '') {
-                        mapData.push(latestData);
+                        if (
+                            latestTrial['GPS latitude'] &&
+                            latestTrial['GPS longitude']
+                        ) {
+                            mapData.push(latestData);
+                        }
                     }
                 }
             }

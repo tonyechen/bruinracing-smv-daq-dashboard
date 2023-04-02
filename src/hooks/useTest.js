@@ -37,7 +37,7 @@ const useTest = () => {
             /*  Test sending data to firebase */
             let latestTrialTime = await getLatestTrialTime();
 
-            latestTrialTime = '2023-4-1 12:31:24';
+            // latestTrialTime = '2023-4-1 12:31:24';
             console.log(latestTrialTime);
 
             const id = setInterval(async () => {

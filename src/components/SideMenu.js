@@ -5,32 +5,32 @@ import {
     ListItemIcon,
     ListItemText,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import PodcastsIcon from '@mui/icons-material/Podcasts';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import Test from '../test/test';
 import useTest from '../hooks/useTest';
 import useLiveData from '../hooks/useLiveData';
 
-let hasLiveData = false;
 let stopLiveData;
 
 const SideMenu = () => {
     // const [startTest, endTest] = useTest();
     const startLiveData = useLiveData();
+    const [isLive, setIsLive] = useState(false);
 
     const toggleLiveData = async () => {
-        if (!hasLiveData) {
+        if (!isLive) {
             console.log('establishing connection to live data...');
             async function establishConnection() {
                 stopLiveData = await startLiveData();
-                hasLiveData = true;
+                setIsLive(true);
             }
             await establishConnection();
         } else {
             console.log('disconnecting from live data...');
             stopLiveData();
-            hasLiveData = false;
+            setIsLive(false);
         }
     };
 
@@ -41,7 +41,7 @@ const SideMenu = () => {
                     <ListItemIcon>
                         <PodcastsIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Live" />
+                    <ListItemText primary={isLive? 'Stop Live' : 'Start Live'} />
                 </ListItemButton>
             </ListItem>
             <ListItem disablePadding>

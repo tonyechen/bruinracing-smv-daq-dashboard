@@ -57,7 +57,7 @@ const Graph = ({ dataType }) => {
     // getAllTrials();
 
     useEffect(() => {
-        if (liveData[0]) {
+        if (liveData) {
             addData();
         }
     }, [liveData, dataType]);
@@ -79,9 +79,9 @@ const Graph = ({ dataType }) => {
         chart.data.datasets.forEach((dataset) => {
             const all_data = Object.values(liveData);
             const data_values = [];
-            all_data.map(data => {
+            all_data.map((data) => {
                 data_values.push(data[dataType]);
-            })
+            });
 
             const num_data_values = data_values.length;
 
