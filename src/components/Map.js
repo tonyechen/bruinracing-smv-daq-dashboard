@@ -80,7 +80,7 @@ const Map = ({ dataType }) => {
                     let i = 0;
 
                     all_trial_data.forEach((data) => {
-                        if (data['GPS latitude'] && data['GPS longitude']) {
+                        if (data['GPS latitude'] !== NaN && data['GPS longitude'] !== NaN) {
                             mapData.setAt(i, {
                                 location: new google.maps.LatLng(
                                     data['GPS latitude'],
@@ -94,8 +94,8 @@ const Map = ({ dataType }) => {
                 } else {
                     if (currentType != '') {
                         if (
-                            latestTrial['GPS latitude'] &&
-                            latestTrial['GPS longitude']
+                            latestTrial['GPS latitude'] !== NaN &&
+                            latestTrial['GPS longitude'] !== NaN
                         ) {
                             mapData.push(latestData);
                         }
@@ -115,6 +115,14 @@ const Map = ({ dataType }) => {
         }
     }
 
+    function handleReset() {
+        let heatmap = new google.maps.visualization.HeatmapLayer({
+            data: mapData,
+        });
+        heatmap.setMap(map);
+        console.log(mapData);
+    }
+
     return (
         <Container sx={{ position: 'relative', width: '100%', height: '100%' }}>
             <div id="map">Map</div>
@@ -124,6 +132,7 @@ const Map = ({ dataType }) => {
                 sx={{ position: 'absolute', left: '30px', bottom: '10px' }}
             >
                 <Button onClick={handleResize}>resize</Button>
+                <Button onClick={handleReset}>reset</Button>
             </ButtonGroup>
         </Container>
     );

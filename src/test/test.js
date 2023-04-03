@@ -18,7 +18,7 @@ export default class Test {
         const coordinates = this.generateLocation();
 
         dataObject['GPS latitude'] = coordinates.lat;
-        dataObject['GPS longtitude'] = coordinates.long;
+        dataObject['GPS longitude'] = coordinates.long;
 
         this.data[this.time] = dataObject;
         this.time += 1000;

@@ -15,7 +15,7 @@ import useLiveData from '../hooks/useLiveData';
 let stopLiveData;
 
 const SideMenu = () => {
-    // const [startTest, endTest] = useTest();
+    const [startTest, endTest] = useTest();
     const startLiveData = useLiveData();
     const [isLive, setIsLive] = useState(false);
 
@@ -52,7 +52,7 @@ const SideMenu = () => {
                     <ListItemText primary="Past Trials" />
                 </ListItemButton>
             </ListItem>
-            {/* <ListItem disablePadding>
+            <ListItem disablePadding>
                 <ListItemButton onClick={startTest}>
                     <ListItemIcon>
                         <AnalyticsIcon />
@@ -67,7 +67,7 @@ const SideMenu = () => {
                     </ListItemIcon>
                     <ListItemText primary="End Test" />
                 </ListItemButton>
-            </ListItem> */}
+            </ListItem>
         </List>
     );
 };
