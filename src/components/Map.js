@@ -24,12 +24,12 @@ const Map = ({ dataType }) => {
         });
 
         const mapOptions = {
-            center: {
-                lat: 34.0689,
-                lng: -118.4552,
-            },
-            zoom: 15,
-            disableDefaultUI: true,
+          center: {
+            lat: 39.7955,
+            lng: -86.2401,
+          },
+          zoom: 15,
+          disableDefaultUI: true,
         };
 
         loader
