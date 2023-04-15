@@ -59,8 +59,8 @@ const Map = ({ dataType }) => {
 
             let latestData = {
                 location: new google.maps.LatLng(
-                    latestTrial['GPS latitude'],
-                    latestTrial['GPS longitude']
+                    latestTrial['GPS latitude'] / 10^7,
+                    latestTrial['GPS longitude'] / 10^7
                 ),
                 weight: latestTrial[dataType],
             };
@@ -83,8 +83,8 @@ const Map = ({ dataType }) => {
                         if (data['GPS latitude'] !== NaN && data['GPS longitude'] !== NaN) {
                             mapData.setAt(i, {
                                 location: new google.maps.LatLng(
-                                    data['GPS latitude'],
-                                    data['GPS longitude']
+                                    data['GPS latitude'] / 10^7,
+                                    data['GPS longitude'] / 10^7
                                 ),
                                 weight: data[dataType],
                             });
